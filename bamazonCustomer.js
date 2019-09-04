@@ -54,3 +54,9 @@ function userPrompt() {
 
     ])
 };
+
+//function to check inventory and if not enough a message to let them know there is 'insufficient quantity!""
+//otherwise, if there is enough inventory then I will need to update the sql database with the new quantity
+//and give the customer their order total
+
+
