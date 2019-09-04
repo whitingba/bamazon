@@ -1,6 +1,8 @@
 //connection to the mysql database
 var mysql = require("mysql");
 
+var inquirer = require("inquirer");
+
 var connection = mysql.createConnection({
     host: "localhost",
 
@@ -20,6 +22,7 @@ connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
     afterConnection();
+
 });
 
 function afterConnection() {
@@ -32,5 +35,22 @@ function afterConnection() {
         }
         console.log("------------------------");
         connection.end();
+        userPrompt();
     });
 }
+
+function userPrompt() {
+    inquirer.prompt([
+        {
+            name: "purchaseItem",
+            type: "input",
+            message: "Type in the id of the item you would like to purchase.",
+        },
+        {
+            name: "purchaseQuantity",
+            type: "input",
+            message: "How many units would you like to purchase?"
+        }
+
+    ])
+};
