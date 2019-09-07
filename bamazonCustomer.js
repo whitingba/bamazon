@@ -25,6 +25,7 @@ connection.connect(function (err) {
 
 });
 
+//function to display inventory once connected is made
 function afterConnection() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
@@ -39,6 +40,7 @@ function afterConnection() {
     });
 }
 
+//function to prompt user as to what they would like to purchase
 function userPrompt() {
     inquirer.prompt([
         {
@@ -53,7 +55,26 @@ function userPrompt() {
         }
 
     ])
+        .then(function (answer) {
+            var chosenItem;
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].stock_quantity < answer.purchaseQuantity) {
+                    console.log("Sorry, not enough inventory, try again");
+                }
+                else {
+                    "UPDATE products SET ? WHERE ?",
+                        [
+
+                        ]
+                }
+            }
+        })
+
+
+
 };
+
+
 
 //function to check inventory and if not enough a message to let them know there is 'insufficient quantity!""
 //otherwise, if there is enough inventory then I will need to update the sql database with the new quantity
