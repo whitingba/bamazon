@@ -64,15 +64,28 @@ function userPrompt() {
                 else {
                     "UPDATE products SET ? WHERE ?",
                         [
-
-                        ]
-                }
+                            {
+                                stock_quantity: stockquantity - answer.purchaseQuantity
+                            },
+                            {
+                                item_id: answer.purchaseItem
+                            }
+                        ],
+                        function (error) {
+                            if (error) throw err;
+                            console.log("Purchase successful!");
+                        }
+                };
             }
         })
 
 
 
 };
+
+function customerTotal() {
+
+}
 
 
 
