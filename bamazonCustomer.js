@@ -36,12 +36,13 @@ function afterConnection() {
         }
         console.log("------------------------");
         connection.end();
-        userPrompt();
+        //console.log(JSON.stringify(res));
+        userPrompt(res);
     });
 }
 
 //function to prompt user as to what they would like to purchase
-function userPrompt() {
+function userPrompt(results) {
     inquirer.prompt([
         {
             name: "purchaseItem",
@@ -56,34 +57,46 @@ function userPrompt() {
 
     ])
         .then(function (answer) {
-            var chosenItem;
+            console.log(JSON.stringify(answer));
+
             for (var i = 0; i < results.length; i++) {
-                if (results[i].stock_quantity < answer.purchaseQuantity) {
-                    console.log("Sorry, not enough inventory, try again");
-                }
-                else {
-                    "UPDATE products SET ? WHERE ?",
-                        [
-                            {
-                                stock_quantity: stockquantity - answer.purchaseQuantity
-                            },
-                            {
-                                item_id: answer.purchaseItem
+                if (answer.purchaseItem.toString() === results[i].item_id.toString()) {
+                    if (results[i].stock_quantity >= answer.purchaseQuantity) {
+
+                        connection.query(
+                            "UPDATE products SET ? WHERE ?",
+                            [
+                                {
+                                    stock_quantity: results[i].stock_quantity - answer.purchaseQuantity
+                                },
+                                {
+                                    item_id: answer.purchaseItem
+                                }
+                            ],
+                            function (error) {
+                                if (error) throw err;
+                                console.log(
+                                    `Thank you for your order. You will be billed for ${answer.purchaseQuantity * results[i].price}`
+                                );
                             }
-                        ],
-                        function (error) {
-                            if (error) throw err;
-                            console.log("Purchase successful!");
-                        }
-                };
-            }
+                        )
+
+                    }
+                    else {
+
+                        console.log("Sorry, not enough inventory, try again");
+
+                    }
+                }
+            };
         })
-
-
 
 };
 
 function customerTotal() {
+    console.log(
+        ``
+    )
 
 }
 
