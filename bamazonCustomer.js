@@ -35,7 +35,7 @@ function afterConnection() {
             )
         }
         console.log("------------------------");
-        connection.end();
+        //connection.end();
         //console.log(JSON.stringify(res));
         userPrompt(res);
     });
@@ -57,7 +57,7 @@ function userPrompt(results) {
 
     ])
         .then(function (answer) {
-            console.log(JSON.stringify(answer));
+            //  console.log(JSON.stringify(answer));
 
             for (var i = 0; i < results.length; i++) {
                 if (answer.purchaseItem.toString() === results[i].item_id.toString()) {
@@ -73,10 +73,10 @@ function userPrompt(results) {
                                     item_id: answer.purchaseItem
                                 }
                             ],
-                            function (error) {
-                                if (error) throw err;
+                            function (err) {
+                                if (err) throw err;
                                 console.log(
-                                    `Thank you for your order. You will be billed for ${answer.purchaseQuantity * results[i].price}`
+                                    `Thank you for your order. You will be billed for ${}`
                                 );
                             }
                         )
@@ -85,25 +85,17 @@ function userPrompt(results) {
                     else {
 
                         console.log("Sorry, not enough inventory, try again");
-
+                        connection.end();
                     }
+
                 }
+
             };
         })
 
 };
 
-function customerTotal() {
-    console.log(
-        ``
-    )
-
-}
 
 
-
-//function to check inventory and if not enough a message to let them know there is 'insufficient quantity!""
-//otherwise, if there is enough inventory then I will need to update the sql database with the new quantity
-//and give the customer their order total
 
 
