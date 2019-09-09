@@ -36,7 +36,7 @@ function afterConnection() {
         }
         console.log("------------------------");
         //connection.end();
-        //console.log(JSON.stringify(res));
+        // console.log(JSON.stringify(res));
         userPrompt(res);
     });
 }
@@ -58,16 +58,19 @@ function userPrompt(results) {
     ])
         .then(function (answer) {
             //  console.log(JSON.stringify(answer));
-
+            var chosenItem;
             for (var i = 0; i < results.length; i++) {
+                //console.log(results[i]);
                 if (answer.purchaseItem.toString() === results[i].item_id.toString()) {
+                    chosenItem = results[i];
                     if (results[i].stock_quantity >= answer.purchaseQuantity) {
 
                         connection.query(
+
                             "UPDATE products SET ? WHERE ?",
                             [
                                 {
-                                    stock_quantity: results[i].stock_quantity - answer.purchaseQuantity
+                                    stock_quantity: chosenItem.stock_quantity - answer.purchaseQuantity
                                 },
                                 {
                                     item_id: answer.purchaseItem
@@ -75,8 +78,9 @@ function userPrompt(results) {
                             ],
                             function (err) {
                                 if (err) throw err;
+
                                 console.log(
-                                    `Thank you for your order. You will be billed for ${}`
+                                    `Thank you for your order. You will be billed for ${answer.purchaseQuantity * chosenItem.price}`
                                 );
                             }
                         )
